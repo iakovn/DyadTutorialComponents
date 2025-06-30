@@ -1,0 +1,12 @@
+{
+    "files.autoSave": "off",
+    "julia.NumThreads": "auto",
+    "julia.symbolCacheDownload": true,
+    "julia.enableTelemetry": true,
+    "julia.packageServer": "https://juliahub.com",
+    "julia.additionalArgs": [
+			"--compiled-modules=yes",
+            "--project=/workspaces/DyadTutorialComponents"
+	]
+
+}
