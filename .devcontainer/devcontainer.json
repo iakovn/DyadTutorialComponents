@@ -13,9 +13,8 @@
                 "julialang.language-julia",
                 "tamasfe.even-better-toml",
                 "ms-toolsai.jupyter",
-                "ms-python.vscode-python-envs",
-                "ms-python.python",
                 "JuliaComputing.dyad-studio"
+                //, "ms-python.python", // Python conflicts with Julia testing. Install if required.
             ],
             
             "settings": {}

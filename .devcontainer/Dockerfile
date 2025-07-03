@@ -29,7 +29,15 @@ RUN curl -fsSL https://install.julialang.org | \
 ENV PATH="${JULIA_INSTALL_PATH}/juliaup/bin:${PATH}"
 
 RUN echo "Build Conda.jl" && pwd && ls -la . && julia -e 'using Pkg;  Pkg.add("Conda"); Pkg.build("Conda")'
-
+RUN echo "Adding system-wide packages" && \
+    julia -e 'using Pkg; \
+    Pkg.add("ModelingToolkit"); \
+    Pkg.add("IJulia"); \
+    Pkg.add("Plots"); \
+    Pkg.add("VSCodeServer"); \
+    Pkg.add("DataFrames"); \
+    Pkg.add("OrdinaryDiffEqDefault"); \
+    Pkg.precompile()'
 # Create system-wide shared julia env for precompilation
 ARG JULIA_SHARED_ENV=${JULIA_INSTALL_PATH}/environments/shared 
 RUN mkdir -p ${JULIA_SHARED_ENV}
