@@ -2,26 +2,31 @@
 {
     "name": "Dyad Playground",
     "build": {
-        "dockerfile": "../Dockerfile"
+        "dockerfile": "Dockerfile"
     },
     "initializeCommand": {
-        "ensure.julia": "[ -d ~/.julia ] || mkdir -p ~/.julia",
         "ensure.gitconfig": "[ -f ~/.gitconfig ] || touch ~/.gitconfig"
     },
     "customizations": {
         "vscode": {
             "extensions": [
                 "julialang.language-julia",
+                "tamasfe.even-better-toml",
                 "ms-toolsai.jupyter",
+                "ms-python.vscode-python-envs",
+                "ms-python.python",
                 "JuliaComputing.dyad-studio"
             ],
+            
             "settings": {}
         }
     },
     "forwardPorts": [8888],
-    "postCreateCommand": "echo 'Dev container ready.'",
+    "postCreateCommand": {
+        "juliahub.auth": "julia -e 'using JuliaHub; JuliaHub.authenticate()'",
+        "julia.update_registry": "julia -e 'using Pkg; Pkg.Registry.add(); Pkg.Registry.update()'"
+    },
     "mounts": [
-        "source=${localEnv:HOME}/.julia,target=/home/jovyan/.julia,type=bind,consistency=cached",
         "source=${localEnv:HOME}/.gitconfig,target=/home/jovyan/.gitconfig,type=bind,consistency=cached"
     ]
 }

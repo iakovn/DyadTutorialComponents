@@ -7,6 +7,8 @@
     "julia.additionalArgs": [
 			"--compiled-modules=yes",
             "--project=/workspaces/DyadTutorialComponents"
-	]
-
+	],
+    "remote.allowTrustedDomains": [
+        "https://juliahub.com"
+    ]
 }
