@@ -34,10 +34,11 @@ RUN echo "Build Conda.jl" && pwd && ls -la . && julia -e 'using Pkg;  Pkg.add("C
 ARG JULIA_SHARED_ENV=${JULIA_INSTALL_PATH}/environments/shared 
 RUN mkdir -p ${JULIA_SHARED_ENV}
 COPY Project.toml ${JULIA_SHARED_ENV}/Project.toml
+COPY src/ ${JULIA_SHARED_ENV}/src/
 WORKDIR ${JULIA_SHARED_ENV}
 
 # install Jupyter Julia support and simulation packages
-RUN echo "Precompile packages" && julia -e 'using Pkg; Pkg.activate("."); Pkg.instantiate(); Pkg.precompile()'
+RUN echo "Precompile packages" && ls -l && julia -e 'using Pkg; Pkg.activate("."); Pkg.instantiate(); Pkg.precompile()'
 
 ENV JULIA_LOAD_PATH="${JULIA_SHARED_ENV}:@:@stdlib"
 
