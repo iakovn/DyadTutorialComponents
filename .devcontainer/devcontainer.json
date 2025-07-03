@@ -5,7 +5,7 @@
         "dockerfile": "Dockerfile"
     },
     "initializeCommand": {
-        "ensure.gitconfig": "[ -f ~/.gitconfig ] || touch ~/.gitconfig"
+        "ensure.gitconfig": "[ -f ~/.gitconfig ] || touch ~/.gitconfig || echo Ignoring missing ~/.gitconfig"
     },
     "customizations": {
         "vscode": {
