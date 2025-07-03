@@ -23,8 +23,6 @@
     },
     "forwardPorts": [8888],
     "postCreateCommand": {
-        "juliahub.auth": "julia -e 'using JuliaHub; JuliaHub.authenticate()'",
-        "julia.update_registry": "julia -e 'using Pkg; Pkg.Registry.add(); Pkg.Registry.update()'"
     },
     "mounts": [
         "source=${localEnv:HOME}/.gitconfig,target=/home/jovyan/.gitconfig,type=bind,consistency=cached"
