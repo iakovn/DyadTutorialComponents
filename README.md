@@ -3,9 +3,12 @@
 This repository serves as a playground for the Dyad Tutorial, as described in the [Getting Started guide](https://help.juliahub.com/dyad/dev/tutorials/getting-started.html).
 
 **Notes:**
-- Authorization with JuliaHub may occasionally interrupt your workflow. To avoid issues, download `auth.toml` as explained [here](https://juliahub.com/ui/Preferences).
-- Ensure the JuliaHub extension is loaded. Initial loading may take some time as packages are compiled. You can monitor progress in the Output pane.
-- Starting the Julia REPL from the terminal does not provide full integration with VS Code. Use the extension command (`Alt-j-o`). The first launch may require additional package compilation.
+- Use of Dyad based on this container is covered by https://github.com/DyadLang/dyad-lang/blob/main/LICENSE.md
+- Starting the Julia REPL from the terminal does not provide full integration with VS Code. Use the extension command (`Julia: Start REPL`, shortcut: `Alt-j-o`). 
+The first launch requires additional package compilation.
+- Authorization with JuliaHub need some attention. Click on the JuliaHub extension icon in the left panel and wait for the
+extension to load. In some cases clicking on the "Change account" and reloading the window was required. Note that initial loading may takes
+some time as packages are compiled. You can monitor progress in the Output pane (View->Output, Ctrl-Shift-U, pick JuliaHub from drop-down).
 
  
 ## Getting Started
