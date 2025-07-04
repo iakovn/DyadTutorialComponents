@@ -4,12 +4,20 @@ This repository serves as a playground for the Dyad Tutorial, as described in th
 
 **Notes:**
 - Use of Dyad based on this container is covered by https://github.com/DyadLang/dyad-lang/blob/main/LICENSE.md (that is free for private and educational reasons).
-= Building this image takes ~30 minutes as most packages get precompiled to speed-up actual use.
-- Initial codespace startup is slow as well as julia will compile, e.g., Language server (monitor in Output: Julia Language Server pain )
+- Building this image takes ~30 minutes as most packages get precompiled to speed-up actual use.
+- Initial codespace startup is slow as well as julia will compile, e.g., VSCodeServer package
 - Starting the Julia REPL from the terminal, i.e., just typing `julia` at shell prompt, does not provide full integration with VS Code. Use the extension command (`Julia: Start REPL`, shortcut: `Alt-j-o`). The first launch requires additional package compilation (VSCodeServer) and takes couple of minutes.
 - Authorization with JuliaHub need some attention. On the first start of the Julia REPL do:
   - Make sure authentication worked by running: `using JuliaHub; JuliaHub.authenticate()` this pops up the browser for the JuliaHub login.
   - Make sure registries are updated by running: `using Pkg; Pkg.Registry.add()` which shoud download and add JuliaComputing and Dyad registries.
+- To ensure reuse of precompiled packages copy shared manifest and resolve. So the overall initialization process from terminal becomes:
+```bash
+cd /workspaces/DyadTutorialComponents
+cp /opt/julia/environments/shared/Manifest.toml .
+julia --project=. -e "using JuliaHub; JuliaHub.authenticate();"
+julia --project=. -e "using Pkg; Pkg.Registry.add();"
+julia --project=. -e "using Pkg; Pkg.resolve();"
+```
 - Jupyter notebook with IJulia only work when the package has been compiled. Therefore, instantiate from the Julia REPL before opening .ipynd file.
 You can work with the notebook either in the VSCode by selecting Jupyter kernel dialog or by starting a separate JupyterLab instance using 
 the included `start-notebook.sh` script. Note that JupyterLab will generate a token that needs to be provided on the first request to the web browser.
