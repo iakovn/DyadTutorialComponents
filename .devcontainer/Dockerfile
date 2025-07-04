@@ -18,6 +18,10 @@ RUN mkdir -p ${JULIA_INSTALL_PATH} \
 USER ${NB_UID}
 
 ARG JULIA_CHANNEL=release
+
+# ensure consistent precompile cache
+ENV SOURCE_DATE_EPOCH=1710000000
+
 # Install Julia via juliaup into ${JULIA_INSTALL_PATH}/juliaup
 RUN curl -fsSL https://install.julialang.org | \
     sh -s -- -y -p ${JULIA_INSTALL_PATH}/juliaup \
@@ -42,27 +46,22 @@ RUN echo "Adding LanguageServer" && \
 RUN echo "Adding REPL" && \
     julia -e 'using Pkg; Pkg.add("REPL"); Pkg.precompile()'
 
-    RUN echo "Adding InteractiveUtils" && \
+RUN echo "Adding InteractiveUtils" && \
     julia -e 'using Pkg; Pkg.add("InteractiveUtils"); Pkg.precompile()'
 
-RUN echo "Adding DataFrames" && \
-    julia -e 'using Pkg; Pkg.add("DataFrames"); Pkg.precompile()'
-
-RUN echo "Adding OrdinaryDiffEqDefault" && \
-    julia -e 'using Pkg; Pkg.add("OrdinaryDiffEqDefault"); Pkg.precompile()'
-
-RUN echo "Adding ModelingToolkit" && \
-    julia -e 'using Pkg; Pkg.add("ModelingToolkit"); Pkg.precompile()'
 
 # Create system-wide shared julia env for precompilation
 ARG JULIA_SHARED_ENV=${JULIA_INSTALL_PATH}/environments/shared 
 RUN mkdir -p ${JULIA_SHARED_ENV}
 COPY Project.toml ${JULIA_SHARED_ENV}/Project.toml
+COPY Manifest.toml ${JULIA_SHARED_ENV}/Manifest.toml
 COPY src/ ${JULIA_SHARED_ENV}/src/
 WORKDIR ${JULIA_SHARED_ENV}
 
 # install Jupyter Julia support and simulation packages
-RUN echo "Precompile packages" && ls -l && julia -e 'using Pkg; Pkg.activate("."); Pkg.instantiate(); Pkg.precompile()'
+RUN echo "Precompile packages" && ls -l && julia --project=${JULIA_SHARED_ENV} -e 'using Pkg; Pkg.instantiate(); Pkg.precompile()'
+
+ENV SOURCE_DATE_EPOCH=
 
 ENV JULIA_LOAD_PATH="${JULIA_SHARED_ENV}:@:@stdlib"
 
