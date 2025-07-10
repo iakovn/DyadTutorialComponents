@@ -27,6 +27,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Get SOURCE_DATE_EPOCH from git commit
+        id: get_timestamp
+        run: |
+          echo "timestamp=$(git log -1 --format=%ct)" >> "$GITHUB_OUTPUT"
+    
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -36,3 +41,6 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/dyadtutorialcomponents:latest
             ghcr.io/${{ github.repository_owner }}/dyadtutorialcomponents:${{ github.ref_name }}
+          build-args: |
+            SOURCE_CODE_EPOCH=${{ steps.get_timestamp.outputs.timestamp }}
+            JULIA_DOCKER_PRECOMPILE=true
